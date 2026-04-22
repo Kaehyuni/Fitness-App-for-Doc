@@ -134,7 +134,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -284,7 +284,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -350,7 +350,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -390,7 +390,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -454,7 +454,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -509,7 +509,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -558,7 +558,7 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
@@ -593,7 +593,60 @@
               <span>📈</span>
               <small>Progress</small>
             </button>
-            <button class="nav-item">
+            <button class="nav-item" onclick="showScreen('profile-screen'); renderProfile();">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 15. PROFILE -->
+        <section id="profile-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="goHome()">←</button>
+          </div>
+
+          <div class="profile-top">
+            <div class="profile-avatar">👤</div>
+            <h2 class="profile-name" id="profile-name">User Name</h2>
+            <p class="profile-email" id="profile-email">email@example.com</p>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-row">
+              <span>Saved Workouts</span>
+              <strong id="profile-workouts">0</strong>
+            </div>
+            <div class="profile-row">
+              <span>Saved Plans</span>
+              <strong id="profile-plans">0</strong>
+            </div>
+            <div class="profile-row">
+              <span>Current Streak</span>
+              <strong id="profile-streak">0 Days</strong>
+            </div>
+          </div>
+
+          <button class="logout-btn" onclick="logOutUser()">Log Out</button>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('plan-screen')">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('progress-screen'); renderProgress();">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item active" onclick="showScreen('profile-screen'); renderProfile();">
               <span>👤</span>
               <small>Profile</small>
             </button>
