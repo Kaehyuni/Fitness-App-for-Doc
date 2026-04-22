@@ -1,1 +1,29 @@
+/* Reset everything */
+* {
+  box-sizing: border-box;
+}
 
+/* Root layout */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+}
+
+/* Base font + smoothing */
+body {
+  font-family: Inter, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Remove default button/input weird styles */
+button, input, textarea, select {
+  font: inherit;
+}
+
+/* Optional: smoother scrolling */
+html {
+  scroll-behavior: smooth;
+}
