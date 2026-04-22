@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fitness App</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- SIGN UP -->
+  <div id="signup" class="screen active">
+    <h2>Create Account</h2>
+    <input id="signupName" placeholder="Full Name">
+    <input id="signupEmail" placeholder="Email">
+    <input id="signupPass" type="password" placeholder="Password">
+    <button onclick="signUp()">Create Account</button>
+    <p>Already have account? <span onclick="goTo('signin')">Sign In</span></p>
+  </div>
+
+  <!-- SIGN IN -->
+  <div id="signin" class="screen">
+    <h2>Welcome Back</h2>
+    <input id="loginEmail" placeholder="Email">
+    <input id="loginPass" type="password" placeholder="Password">
+    <button onclick="signIn()">Sign In</button>
+    <p>No account? <span onclick="goTo('signup')">Sign Up</span></p>
+  </div>
+
+  <!-- HOME -->
+  <div id="home" class="screen">
+    <h2 id="welcome"></h2>
+    <button onclick="goTo('choose')">Start Workout</button>
+    <button onclick="goTo('plan')">Plan Workout</button>
+    <button onclick="goTo('progress')">View Progress</button>
+  </div>
+
+  <!-- CHOOSE MODE -->
+  <div id="choose" class="screen">
+    <h2>Where are you working out?</h2>
+    <button onclick="startWorkout('Gym')">Gym Workout</button>
+    <button onclick="startWorkout('Home')">Home Workout</button>
+  </div>
+
+  <!-- WORKOUT -->
+  <div id="workout" class="screen">
+    <h2>Workout</h2>
+    <p id="workoutType"></p>
+
+    <div class="exercise">
+      <p>Push Ups</p>
+      <input id="pushups" placeholder="Reps">
+    </div>
+
+    <div class="exercise">
+      <p>Plank (seconds)</p>
+      <input id="plank" placeholder="Time">
+    </div>
+
+    <button onclick="finishWorkout()">End Workout</button>
+  </div>
+
+  <!-- SUMMARY -->
+  <div id="summary" class="screen">
+    <h2>Great Job!</h2>
+    <p id="summaryText"></p>
+    <button onclick="goTo('home')">Back Home</button>
+  </div>
+
+  <!-- PLAN -->
+  <div id="plan" class="screen">
+    <h2>Plan Workout</h2>
+    <button onclick="selectGoal('Strength')">Strength</button>
+    <button onclick="selectGoal('Endurance')">Endurance</button>
+    <button onclick="selectGoal('General')">General</button>
+  </div>
+
+  <!-- PLAN PREVIEW -->
+  <div id="planPreview" class="screen">
+    <h2>Your Plan</h2>
+    <p id="planText"></p>
+    <button onclick="goTo('home')">Save Plan</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div id="progress" class="screen">
+    <h2>Progress</h2>
+    <p id="progressText"></p>
+    <button onclick="goTo('timeline')">Timeline</button>
+    <button onclick="goTo('streak')">Streak</button>
+    <button onclick="goTo('milestones')">Milestones</button>
+  </div>
+
+  <!-- TIMELINE -->
+  <div id="timeline" class="screen">
+    <h2>Timeline</h2>
+    <p id="timelineText"></p>
+    <button onclick="goTo('home')">Back</button>
+  </div>
+
+  <!-- STREAK -->
+  <div id="streak" class="screen">
+    <h2>Streak</h2>
+    <p id="streakText"></p>
+    <button onclick="goTo('home')">Back</button>
+  </div>
+
+  <!-- MILESTONES -->
+  <div id="milestones" class="screen">
+    <h2>Milestones</h2>
+    <p id="milestoneText"></p>
+    <button onclick="goTo('home')">Back</button>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
