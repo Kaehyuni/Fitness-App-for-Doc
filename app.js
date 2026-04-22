@@ -164,16 +164,18 @@ function signIn() {
   document.getElementById("signin-email").value = "";
   document.getElementById("signin-password").value = "";
   renderHome();
+  renderProgress();
+  renderProfile();
   showScreen("home-screen");
 }
 
 function computeStreak(workouts) {
   if (!workouts.length) return 0;
 
-  const uniqueDates = [...new Set(workouts.map(w => {
-    const d = new Date(w.savedAt);
-    d.setHours(0, 0, 0, 0);
-    return d.getTime();
+  const uniqueDates = [...new Set(workouts.map(workout => {
+    const date = new Date(workout.savedAt);
+    date.setHours(0, 0, 0, 0);
+    return date.getTime();
   }))].sort((a, b) => b - a);
 
   let streak = 1;
@@ -210,8 +212,8 @@ function chooseGoal(goal) {
 
   document.querySelectorAll(".goal-card").forEach(card => {
     card.classList.remove("selected");
-    const check = card.querySelector(".goal-check");
-    if (check) check.remove();
+    const oldCheck = card.querySelector(".goal-check");
+    if (oldCheck) oldCheck.remove();
   });
 
   const map = {
@@ -251,9 +253,25 @@ function generatePlan() {
 }
 
 function quickPlan() {
-  pendingPlan = [...defaultPlans["General Fitness"]];
   selectedGoal = "General Fitness";
-  generatePlan();
+  pendingPlan = [...defaultPlans["General Fitness"]];
+  document.getElementById("plan-goal-label").textContent = selectedGoal;
+  document.getElementById("plan-count").textContent = pendingPlan.length;
+
+  const list = document.getElementById("plan-preview-list");
+  list.innerHTML = "";
+
+  pendingPlan.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "plan-preview-item";
+    div.innerHTML = `
+      <div class="plan-name">${index + 1}. ${item.name}</div>
+      <div class="plan-value">${item.sets} x ${item.value}</div>
+    `;
+    list.appendChild(div);
+  });
+
+  showScreen("plan-preview-screen");
 }
 
 function savePlan() {
@@ -262,11 +280,13 @@ function savePlan() {
 
   user.savedPlans.unshift({
     goal: selectedGoal,
+    type: selectedPlanType,
     items: pendingPlan,
     savedAt: new Date().toISOString()
   });
 
   updateCurrentUser(user);
+  renderProfile();
   alert("Plan saved.");
   goHome();
 }
@@ -285,23 +305,23 @@ function continueLastWorkout() {
     return;
   }
 
-  const last = user.workouts[0];
-  document.getElementById("continue-date").textContent = formatDate(new Date(last.savedAt));
+  const lastWorkout = user.workouts[0];
+  document.getElementById("continue-date").textContent = formatDate(new Date(lastWorkout.savedAt));
 
   const list = document.getElementById("continue-list");
   list.innerHTML = "";
 
-  last.exercises.forEach(ex => {
+  lastWorkout.exercises.forEach(exercise => {
     const div = document.createElement("div");
     div.className = "last-workout-item";
     div.innerHTML = `
-      <div class="last-title">${ex.name}</div>
-      <div class="last-value">${ex.sets} x ${ex.value}</div>
+      <div class="last-title">${exercise.name}</div>
+      <div class="last-value">${exercise.sets} x ${exercise.value}</div>
     `;
     list.appendChild(div);
   });
 
-  pendingWorkout = JSON.parse(JSON.stringify(last));
+  pendingWorkout = JSON.parse(JSON.stringify(lastWorkout));
   showScreen("continue-screen");
 }
 
@@ -363,6 +383,7 @@ function renderWorkoutScreen() {
 }
 
 function updateExercise(index, field, value) {
+  if (!pendingWorkout) return;
   pendingWorkout.exercises[index][field] = value;
 }
 
@@ -407,12 +428,12 @@ function endWorkout() {
   const summary = document.getElementById("summary-performance");
   summary.innerHTML = "";
 
-  pendingWorkout.exercises.forEach(ex => {
+  pendingWorkout.exercises.forEach(exercise => {
     const row = document.createElement("div");
     row.className = "performance-row";
     row.innerHTML = `
-      <span>${ex.name}</span>
-      <span class="performance-plus">+${ex.value}</span>
+      <span>${exercise.name}</span>
+      <span class="performance-plus">+${exercise.value}</span>
     `;
     summary.appendChild(row);
   });
@@ -433,10 +454,12 @@ function saveWorkout() {
   user.workouts.unshift(JSON.parse(JSON.stringify(pendingWorkout)));
   updateCurrentUser(user);
 
-  alert("Workout saved.");
-  pendingWorkout = null;
   renderHome();
   renderProgress();
+  renderProfile();
+
+  alert("Workout saved.");
+  pendingWorkout = null;
   goHome();
 }
 
@@ -456,7 +479,12 @@ function renderTimeline() {
   list.innerHTML = "";
 
   if (!user.workouts.length) {
-    list.innerHTML = `<div class="timeline-item"><div class="timeline-left"><strong>No workouts yet</strong></div><div></div></div>`;
+    list.innerHTML = `
+      <div class="timeline-item">
+        <div class="timeline-left"><strong>No workouts yet</strong></div>
+        <div></div>
+      </div>
+    `;
     return;
   }
 
@@ -477,7 +505,6 @@ function renderTimeline() {
 function renderStreak() {
   const user = getCurrentUser();
   if (!user) return;
-
   document.getElementById("streak-big-number").textContent = computeStreak(user.workouts);
 }
 
@@ -539,11 +566,39 @@ function renderMilestones() {
   });
 }
 
+function renderProfile() {
+  const user = getCurrentUser();
+  if (!user) {
+    showScreen("signin-screen");
+    return;
+  }
+
+  document.getElementById("profile-name").textContent = user.name;
+  document.getElementById("profile-email").textContent = user.email;
+  document.getElementById("profile-workouts").textContent = user.workouts.length;
+  document.getElementById("profile-plans").textContent = user.savedPlans.length;
+  document.getElementById("profile-streak").textContent = `${computeStreak(user.workouts)} Days`;
+}
+
+function logOutUser() {
+  clearSession();
+  pendingWorkout = null;
+  clearInterval(timerInterval);
+
+  document.getElementById("signin-email").value = "";
+  document.getElementById("signin-password").value = "";
+
+  alert("You have been logged out.");
+  showScreen("signin-screen");
+}
+
 window.onload = function () {
   const user = getCurrentUser();
+
   if (user) {
     renderHome();
     renderProgress();
+    renderProfile();
     showScreen("home-screen");
   } else {
     showScreen("signin-screen");
