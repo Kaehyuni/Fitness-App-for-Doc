@@ -295,7 +295,7 @@ input {
   bottom: 0;
   height: 72px;
   background: #f8f8fb;
-  border-top: 1px solid #ddddE5;
+  border-top: 1px solid #dddde5;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -782,31 +782,68 @@ input {
   font-size: 13px;
 }
 
+.profile-top {
+  text-align: center;
+  margin-top: 18px;
+  margin-bottom: 22px;
+}
+
+.profile-avatar {
+  width: 82px;
+  height: 82px;
+  border-radius: 20px;
+  background: #ebe5f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  margin: 0 auto 14px;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 28px;
+  color: #232838;
+}
+
+.profile-email {
+  margin: 8px 0 0;
+  color: #8b90a0;
+  font-size: 14px;
+}
+
+.profile-card {
+  background: white;
+  border: 1px solid #dcdfe8;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid #eceef4;
+  color: #2b3040;
+}
+
+.profile-row:last-child {
+  border-bottom: none;
+}
+
+.logout-btn {
+  width: 100%;
+  height: 48px;
+  border: 1px solid #f1b8b8;
+  border-radius: 11px;
+  background: white;
+  color: #c63a3a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 .centered {
   text-align: center;
-}  border: 1px solid #ccc;
-}
-
-button {
-  padding: 12px;
-  border-radius: 10px;
-  border: none;
-  background: #6c5ce7;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-span {
-  color: #6c5ce7;
-  cursor: pointer;
-}
-
-.exercise {
-  background: #f1f1f1;
-  padding: 10px;
-  border-radius: 10px;
 }
