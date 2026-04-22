@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.phone {
+  width: 350px;
+  height: 700px;
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.screen.active {
+  display: flex;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #6c5ce7;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+span {
+  color: #6c5ce7;
+  cursor: pointer;
+}
+
+.exercise {
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 10px;
+}
