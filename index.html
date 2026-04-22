@@ -2,120 +2,608 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Fitness App</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="app-shell">
+    <div class="phone-frame">
+      <div class="phone-screen">
 
-<div class="phone">
+        <!-- 1. SIGN IN -->
+        <section id="signin-screen" class="screen active">
+          <div class="auth-top-space"></div>
 
-  <!-- SIGN UP -->
-  <div id="signup" class="screen active">
-    <h2>Create Account</h2>
-    <input id="signupName" placeholder="Full Name">
-    <input id="signupEmail" placeholder="Email">
-    <input id="signupPass" type="password" placeholder="Password">
-    <button onclick="signUp()">Create Account</button>
-    <p>Already have account? <span onclick="goTo('signin')">Sign In</span></p>
-  </div>
+          <div class="brand-box">
+            <div class="brand-icon">🏋️</div>
+          </div>
 
-  <!-- SIGN IN -->
-  <div id="signin" class="screen">
-    <h2>Welcome Back</h2>
-    <input id="loginEmail" placeholder="Email">
-    <input id="loginPass" type="password" placeholder="Password">
-    <button onclick="signIn()">Sign In</button>
-    <p>No account? <span onclick="goTo('signup')">Sign Up</span></p>
-  </div>
+          <h1 class="auth-title">Welcome back!</h1>
+          <p class="auth-subtitle">Log in to continue</p>
 
-  <!-- HOME -->
-  <div id="home" class="screen">
-    <h2 id="welcome"></h2>
-    <button onclick="goTo('choose')">Start Workout</button>
-    <button onclick="goTo('plan')">Plan Workout</button>
-    <button onclick="goTo('progress')">View Progress</button>
-  </div>
+          <div class="form-group">
+            <input id="signin-email" class="input" type="email" placeholder="Email" />
+          </div>
 
-  <!-- CHOOSE MODE -->
-  <div id="choose" class="screen">
-    <h2>Where are you working out?</h2>
-    <button onclick="startWorkout('Gym')">Gym Workout</button>
-    <button onclick="startWorkout('Home')">Home Workout</button>
-  </div>
+          <div class="form-group password-wrap">
+            <input id="signin-password" class="input" type="password" placeholder="Password" />
+            <button class="eye-btn" type="button" onclick="togglePassword('signin-password', this)">👁</button>
+          </div>
 
-  <!-- WORKOUT -->
-  <div id="workout" class="screen">
-    <h2>Workout</h2>
-    <p id="workoutType"></p>
+          <div class="forgot-row">
+            <button class="text-link" type="button">Forgot Password?</button>
+          </div>
 
-    <div class="exercise">
-      <p>Push Ups</p>
-      <input id="pushups" placeholder="Reps">
+          <button class="primary-btn" onclick="signIn()">Sign In</button>
+
+          <p class="bottom-auth-text">
+            Don’t have an account?
+            <button class="inline-link" type="button" onclick="showScreen('signup-screen')">Sign Up</button>
+          </p>
+        </section>
+
+        <!-- 2. SIGN UP -->
+        <section id="signup-screen" class="screen">
+          <div class="auth-top-space"></div>
+
+          <div class="brand-box">
+            <div class="brand-icon">🏋️</div>
+          </div>
+
+          <h1 class="auth-title">Create your account</h1>
+          <p class="auth-subtitle">Start your fitness journey today!</p>
+
+          <div class="form-group">
+            <input id="signup-name" class="input" type="text" placeholder="Full Name" />
+          </div>
+
+          <div class="form-group">
+            <input id="signup-email" class="input" type="email" placeholder="Email" />
+          </div>
+
+          <div class="form-group password-wrap">
+            <input id="signup-password" class="input" type="password" placeholder="Password" />
+            <button class="eye-btn" type="button" onclick="togglePassword('signup-password', this)">👁</button>
+          </div>
+
+          <button class="primary-btn" onclick="signUp()">Create Account</button>
+
+          <p class="bottom-auth-text">
+            Already have an account?
+            <button class="inline-link" type="button" onclick="showScreen('signin-screen')">Sign In</button>
+          </p>
+        </section>
+
+        <!-- 3. HOME -->
+        <section id="home-screen" class="screen app-screen with-bottom-nav">
+          <div class="top-icons-row">
+            <button class="icon-btn">☰</button>
+            <button class="icon-btn">🔔</button>
+          </div>
+
+          <p class="hello-text">Hi, <span id="home-username">Kenny</span> 👋</p>
+          <h2 class="welcome-title">Welcome back!</h2>
+
+          <div class="streak-card">
+            <div class="streak-icon">🔥</div>
+            <div>
+              <div class="streak-main"><span id="home-streak">0</span> Day Streak</div>
+              <div class="streak-sub">Keep it up!</div>
+            </div>
+          </div>
+
+          <button class="home-feature home-feature-primary" onclick="showScreen('choose-mode-screen')">
+            <div class="feature-icon-circle">▶</div>
+            <div>
+              <div class="feature-title light">Start Workout</div>
+              <div class="feature-sub light">Track your workout</div>
+            </div>
+          </button>
+
+          <button class="home-feature" onclick="showScreen('plan-screen')">
+            <div class="feature-icon">📋</div>
+            <div>
+              <div class="feature-title">Plan Workout</div>
+              <div class="feature-sub">Build or find a plan</div>
+            </div>
+          </button>
+
+          <button class="home-feature" onclick="showScreen('progress-screen'); renderProgress();">
+            <div class="feature-icon">📈</div>
+            <div>
+              <div class="feature-title">View Progress</div>
+              <div class="feature-sub">See your improvements</div>
+            </div>
+          </button>
+
+          <nav class="bottom-nav">
+            <button class="nav-item active">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('plan-screen')">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('progress-screen'); renderProgress();">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 4. CHOOSE MODE -->
+        <section id="choose-mode-screen" class="screen app-screen">
+          <div class="header-row">
+            <button class="back-btn" onclick="goHome()">←</button>
+          </div>
+
+          <h2 class="screen-heading centered">Where are you<br />working out?</h2>
+
+          <button class="mode-card" onclick="selectWorkoutMode('Gym Workout')">
+            <div class="mode-icon purple">🏋️</div>
+            <div>
+              <div class="mode-title">Gym Workout</div>
+              <div class="mode-sub">Equipment available</div>
+            </div>
+          </button>
+
+          <button class="mode-card" onclick="selectWorkoutMode('Home Workout')">
+            <div class="mode-icon dark">🏠</div>
+            <div>
+              <div class="mode-title">Home Workout</div>
+              <div class="mode-sub">No equipment</div>
+            </div>
+          </button>
+
+          <div class="continue-box">
+            <p class="continue-label">Continue last workout?</p>
+            <div class="yes-no-row">
+              <button class="outline-btn" onclick="continueLastWorkout()">Yes</button>
+              <button class="outline-btn gray" onclick="startNewWorkout()">No</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. CONTINUE WORKOUT -->
+        <section id="continue-screen" class="screen app-screen">
+          <div class="header-row">
+            <button class="back-btn" onclick="showScreen('choose-mode-screen')">←</button>
+          </div>
+
+          <h2 class="screen-heading">Last Workout</h2>
+          <p class="date-text" id="continue-date">May 12, 2024</p>
+
+          <div class="last-workout-list" id="continue-list"></div>
+
+          <button class="primary-btn" onclick="loadIntoWorkout()">Continue</button>
+          <button class="text-action" onclick="startNewWorkout()">Start New Workout</button>
+        </section>
+
+        <!-- 6. WORKOUT SCREEN -->
+        <section id="workout-screen" class="screen app-screen">
+          <div class="header-timer-row">
+            <button class="back-btn" onclick="showScreen('choose-mode-screen')">←</button>
+            <div class="timer-area">⏱ <span id="timer-text">00:00</span></div>
+          </div>
+
+          <div class="exercise-header-row">
+            <h2 class="screen-heading small-margin">Exercises</h2>
+            <button class="add-btn" onclick="addExercise()">+ Add Exercise</button>
+          </div>
+
+          <div id="exercise-list"></div>
+
+          <div class="notes-box">
+            <label class="notes-label">Notes</label>
+            <input id="workout-notes" class="input" type="text" placeholder="How are you feeling today?" />
+          </div>
+
+          <button class="primary-btn" onclick="endWorkout()">End Workout</button>
+        </section>
+
+        <!-- 7. SUMMARY -->
+        <section id="summary-screen" class="screen app-screen">
+          <div class="summary-check">✓</div>
+          <h2 class="summary-title">Great Job!</h2>
+          <p class="summary-subtitle">Workout Completed</p>
+
+          <div class="summary-card">
+            <div class="summary-card-title">Your Performance</div>
+            <div id="summary-performance"></div>
+          </div>
+
+          <div class="summary-mini-card fire">
+            <div class="mini-icon">🔥</div>
+            <div>
+              <div class="mini-main"><span id="summary-streak">0</span> Day Streak</div>
+              <div class="mini-sub">You’re on fire!</div>
+            </div>
+          </div>
+
+          <div class="summary-mini-card">
+            <div>
+              <div class="mini-sub top-gap">Next Recommendation</div>
+              <div class="mini-main dark">Upper Body Focus</div>
+              <div class="mini-sub">Tomorrow</div>
+            </div>
+          </div>
+
+          <button class="primary-btn" onclick="saveWorkout()">Save Workout</button>
+          <button class="text-action" onclick="goHome()">Back to Home</button>
+        </section>
+
+        <!-- 8. PLAN WORKOUT -->
+        <section id="plan-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="goHome()">←</button>
+          </div>
+
+          <h2 class="screen-heading centered">Plan your workout</h2>
+          <p class="center-sub">Choose how you want to create your plan</p>
+
+          <button class="plan-option" onclick="setPlanType('Build Routine'); showScreen('goal-screen')">
+            <div class="plan-option-icon">📅</div>
+            <div>
+              <div class="mode-title">Build Routine</div>
+              <div class="mode-sub">Create your own plan</div>
+            </div>
+          </button>
+
+          <button class="plan-option" onclick="setPlanType('Quick Plan'); quickPlan();">
+            <div class="plan-option-icon">⚡</div>
+            <div>
+              <div class="mode-title">Quick Plan</div>
+              <div class="mode-sub">Get a plan in seconds</div>
+            </div>
+          </button>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item active">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('progress-screen'); renderProgress();">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 9. SELECT GOAL -->
+        <section id="goal-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="showScreen('plan-screen')">←</button>
+          </div>
+
+          <h2 class="screen-heading centered">What's your goal?</h2>
+          <p class="center-sub">Choose one to get started</p>
+
+          <button id="goal-strength" class="goal-card selected" onclick="chooseGoal('Strength')">
+            <div class="goal-left">
+              <div class="goal-icon">🏃</div>
+              <div>
+                <div class="mode-title">Strength</div>
+                <div class="mode-sub">Build muscle & get stronger</div>
+              </div>
+            </div>
+            <div class="goal-check">✓</div>
+          </button>
+
+          <button id="goal-endurance" class="goal-card" onclick="chooseGoal('Endurance')">
+            <div class="goal-left">
+              <div class="goal-icon">🔥</div>
+              <div>
+                <div class="mode-title">Endurance</div>
+                <div class="mode-sub">Improve stamina & cardio</div>
+              </div>
+            </div>
+          </button>
+
+          <button id="goal-general" class="goal-card" onclick="chooseGoal('General Fitness')">
+            <div class="goal-left">
+              <div class="goal-icon">🏆</div>
+              <div>
+                <div class="mode-title">General Fitness</div>
+                <div class="mode-sub">Stay fit & healthy</div>
+              </div>
+            </div>
+          </button>
+
+          <button class="primary-btn" onclick="generatePlan()">Generate Plan</button>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item active">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('progress-screen'); renderProgress();">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 10. PLAN PREVIEW -->
+        <section id="plan-preview-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="showScreen('goal-screen')">←</button>
+          </div>
+
+          <h2 class="screen-heading">Your Plan</h2>
+          <p class="date-text"><span id="plan-goal-label">Strength</span> Plan • <span id="plan-count">4</span> Exercises</p>
+
+          <div id="plan-preview-list"></div>
+
+          <div class="plan-actions">
+            <button class="outline-btn wide" onclick="showScreen('goal-screen')">Edit Plan</button>
+            <button class="primary-btn wide" onclick="savePlan()">Save Plan</button>
+          </div>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item active">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('progress-screen'); renderProgress();">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 11. PROGRESS -->
+        <section id="progress-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row progress-title-row">
+            <div></div>
+            <h2 class="screen-heading centered no-bottom">Progress</h2>
+            <button class="icon-btn small">🗓</button>
+          </div>
+
+          <div class="progress-overview-card">
+            <div class="overview-label">Overview</div>
+            <div class="overview-row">
+              <div class="overview-box">
+                <div class="overview-icon">🔥</div>
+                <div class="overview-number" id="progress-streak">0</div>
+                <div class="overview-text">Day Streak</div>
+              </div>
+              <div class="overview-box">
+                <div class="overview-icon">📈</div>
+                <div class="overview-number" id="progress-workouts">0</div>
+                <div class="overview-text">Workouts</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quick-actions-card">
+            <div class="overview-label">Quick Actions</div>
+            <button class="action-row" onclick="showScreen('timeline-screen'); renderTimeline();">
+              <span>🗓 View Timeline</span>
+              <span>›</span>
+            </button>
+            <button class="action-row" onclick="showScreen('streak-screen'); renderStreak();">
+              <span>🔥 View Streak Days</span>
+              <span>›</span>
+            </button>
+            <button class="action-row" onclick="showScreen('milestones-screen'); renderMilestones();">
+              <span>🏆 View Milestones</span>
+              <span>›</span>
+            </button>
+          </div>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('plan-screen')">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item active">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 12. TIMELINE -->
+        <section id="timeline-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="showScreen('progress-screen'); renderProgress();">←</button>
+          </div>
+
+          <h2 class="screen-heading centered no-bottom">Timeline</h2>
+          <p class="center-sub">Your workout history</p>
+
+          <div class="weekday-row">
+            <span>Mon</span>
+            <span>Tue</span>
+            <span>Wed</span>
+            <span>Thu</span>
+            <span>Fri</span>
+            <span>Sat</span>
+            <span>Sun</span>
+          </div>
+
+          <div class="dots-row">
+            <span class="dot filled"></span>
+            <span class="dot filled"></span>
+            <span class="dot light"></span>
+            <span class="dot filled"></span>
+            <span class="dot light"></span>
+            <span class="dot light"></span>
+            <span class="dot light"></span>
+          </div>
+
+          <div id="timeline-list"></div>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('plan-screen')">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item active">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 13. STREAK -->
+        <section id="streak-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="showScreen('progress-screen'); renderProgress();">←</button>
+          </div>
+
+          <h2 class="screen-heading centered no-bottom">Streak</h2>
+          <p class="center-sub">Consistency is key</p>
+
+          <div class="big-fire">🔥</div>
+          <div class="big-streak-number" id="streak-big-number">0</div>
+          <div class="big-streak-label">Day Streak</div>
+
+          <div class="streak-week-row">
+            <span class="mini-fire">🔥</span>
+            <span class="mini-fire">🔥</span>
+            <span class="mini-fire">🔥</span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+            <span class="mini-dot"></span>
+          </div>
+
+          <p class="streak-encourage">Keep it going!</p>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('plan-screen')">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item active">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+        <!-- 14. MILESTONES -->
+        <section id="milestones-screen" class="screen app-screen with-bottom-nav">
+          <div class="header-row">
+            <button class="back-btn" onclick="showScreen('progress-screen'); renderProgress();">←</button>
+          </div>
+
+          <h2 class="screen-heading centered no-bottom">Milestones</h2>
+          <p class="center-sub">Celebrate your progress!</p>
+
+          <div id="milestones-list"></div>
+
+          <nav class="bottom-nav">
+            <button class="nav-item" onclick="goHome()">
+              <span>🏠</span>
+              <small>Home</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('choose-mode-screen')">
+              <span>🏋️</span>
+              <small>Workout</small>
+            </button>
+            <button class="nav-item" onclick="showScreen('plan-screen')">
+              <span>📋</span>
+              <small>Plan</small>
+            </button>
+            <button class="nav-item active">
+              <span>📈</span>
+              <small>Progress</small>
+            </button>
+            <button class="nav-item">
+              <span>👤</span>
+              <small>Profile</small>
+            </button>
+          </nav>
+        </section>
+
+      </div>
     </div>
-
-    <div class="exercise">
-      <p>Plank (seconds)</p>
-      <input id="plank" placeholder="Time">
-    </div>
-
-    <button onclick="finishWorkout()">End Workout</button>
   </div>
 
-  <!-- SUMMARY -->
-  <div id="summary" class="screen">
-    <h2>Great Job!</h2>
-    <p id="summaryText"></p>
-    <button onclick="goTo('home')">Back Home</button>
-  </div>
-
-  <!-- PLAN -->
-  <div id="plan" class="screen">
-    <h2>Plan Workout</h2>
-    <button onclick="selectGoal('Strength')">Strength</button>
-    <button onclick="selectGoal('Endurance')">Endurance</button>
-    <button onclick="selectGoal('General')">General</button>
-  </div>
-
-  <!-- PLAN PREVIEW -->
-  <div id="planPreview" class="screen">
-    <h2>Your Plan</h2>
-    <p id="planText"></p>
-    <button onclick="goTo('home')">Save Plan</button>
-  </div>
-
-  <!-- PROGRESS -->
-  <div id="progress" class="screen">
-    <h2>Progress</h2>
-    <p id="progressText"></p>
-    <button onclick="goTo('timeline')">Timeline</button>
-    <button onclick="goTo('streak')">Streak</button>
-    <button onclick="goTo('milestones')">Milestones</button>
-  </div>
-
-  <!-- TIMELINE -->
-  <div id="timeline" class="screen">
-    <h2>Timeline</h2>
-    <p id="timelineText"></p>
-    <button onclick="goTo('home')">Back</button>
-  </div>
-
-  <!-- STREAK -->
-  <div id="streak" class="screen">
-    <h2>Streak</h2>
-    <p id="streakText"></p>
-    <button onclick="goTo('home')">Back</button>
-  </div>
-
-  <!-- MILESTONES -->
-  <div id="milestones" class="screen">
-    <h2>Milestones</h2>
-    <p id="milestoneText"></p>
-    <button onclick="goTo('home')">Back</button>
-  </div>
-
-</div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
